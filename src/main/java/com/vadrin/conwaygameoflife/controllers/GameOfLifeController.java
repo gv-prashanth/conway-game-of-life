@@ -42,7 +42,8 @@ public class GameOfLifeController {
 		} catch (NullPointerException | URISyntaxException | JsonProcessingException e) {
 			e.printStackTrace();
 			Map<String, String> toReturn = new HashMap<String, String>();
-			toReturn.put("Exception", "Invalid Input. Please see sample at XXXXX");
+			toReturn.put("Exception",
+					"Invalid Input. Please see sample at https://github.com/gv-prashanth/conway-game-of-life");
 			return ResponseEntity.badRequest().body(toReturn);
 		}
 	}
