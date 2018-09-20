@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Conway Game of Life</title>
+<script>
+	var worldCreated = false;
+	function getUrlVars() {
+		var vars = {};
+		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+				function(m, key, value) {
+					vars[key] = value;
+				});
+		return vars;
+	}
+	function initTheWorld(size) {
+		// Find a <table> element with id="myTable":
+		var table = document.getElementById("myTable");
+		for (var i = 0; i < size; i++) {
+			// Create an empty <tr> element and add it to the 1st position of the table:
+			var row = table.insertRow(-1);
+			for (var j = 0; j < size; j++) {
+				// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+				var cell = row.insertCell(-1);
+				cell.style.width = '8px';
+				cell.style.height = '8px';
+				cell.style.backgroundColor = "white";
+				//cell.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			}
+		}
+		worldCreated = true;
+	}
+	function stepTheWorld() {
+		var table = document.getElementById("myTable");
+		var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance 
+		xmlhttp.open("GET", "/world/" + getUrlVars()["id"]);
+		xmlhttp.setRequestHeader("Content-Type", "application/json");
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var cells = JSON.parse(this.responseText).cells;
+				if (!worldCreated) {
+					initTheWorld(cells.length);
+				}
+				for (var i = 0; i < cells.length; i++) {
+					for (var j = 0; j < cells.length; j++) {
+						var thisCell = table.rows[i].cells[j];
+						if (cells[i][j].alive) {
+							thisCell.style.backgroundColor = "black";
+						} else {
+							thisCell.style.backgroundColor = "white";
+						}
+					}
+				}
+			} else if (this.readyState == 4) {
+				document.getElementById("runMessage").innerHTML = "This world does not exit. Try creating one!";
+			}
+		};
+		xmlhttp.send();
+		disableScreen('input');
+		disableScreen('select');
+	}
+	function goBack() {
+		window.location.href = "/";
+	}
+</script>
+</head>
+<body>
+	<h1>Conway Game of Life</h1>
+	<div id="manage">
+		<button type="button" onclick="goBack();">Create</button>
+	</div>
+	<div id="runMessage"></div>
+	<br>
+	<table id="myTable" border=1>
+	</table>
+	<script>
+		setInterval(function() {
+			stepTheWorld();
+		}, 1000);
+	</script>
+</body>
+</html>

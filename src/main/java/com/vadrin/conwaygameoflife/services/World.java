@@ -6,14 +6,18 @@ public class World {
 
 	private Cell[][] cells;
 
-	public World(int xSize, int ySize) {
-		super();
-		cells = new Cell[xSize][ySize];
-		for (int i = 0; i < cells.length; i++) {
-			for (int j = 0; j < cells[i].length; j++) {
-				cells[i][j] = new Cell();
-			}
-		}
+//	public World(int xSize, int ySize) {
+//		super();
+//		cells = new Cell[xSize][ySize];
+//		for (int i = 0; i < cells.length; i++) {
+//			for (int j = 0; j < cells[i].length; j++) {
+//				cells[i][j] = new Cell();
+//			}
+//		}
+//	}
+
+	public void setCells(Cell[][] cells) {
+		this.cells = cells;
 	}
 
 	public void tick() {
@@ -21,34 +25,22 @@ public class World {
 		for (int i = 0; i < tempCells.length; i++) {
 			for (int j = 0; j < tempCells[i].length; j++) {
 				// Rule1
-				if (tempCells[i][j].isAlive() && getNumberOfAliveNeighbours(tempCells, i, j) < 2) {
+				if (tempCells[i][j].isAlive() && numberOfLiveNeighbours(tempCells, i, j) < 2) {
 					cells[i][j].markDead();
 				}
 				// Rule3
-				if (tempCells[i][j].isAlive() && getNumberOfAliveNeighbours(tempCells, i, j) > 3) {
+				if (tempCells[i][j].isAlive() && numberOfLiveNeighbours(tempCells, i, j) > 3) {
 					cells[i][j].markDead();
 				}
 				// Rule4
-				if (!tempCells[i][j].isAlive() && getNumberOfAliveNeighbours(tempCells, i, j) == 3) {
+				if (!tempCells[i][j].isAlive() && numberOfLiveNeighbours(tempCells, i, j) == 3) {
 					cells[i][j].markAlive();
 				}
 			}
 		}
 	}
 
-	// public void paint(Graphics g) {
-	// for (int i = 0; i < cells.length; i++) {
-	// for (int j = 0; j < cells[i].length; j++) {
-	// if (cells[i][j].isAlive()) {
-	// g.fillRect(5 * i, 5 * j, 5, 5);
-	// } else {
-	// g.drawRect(5 * i, 5 * j, 5, 5);
-	// }
-	// }
-	// }
-	// }
-
-	public void setLive(int x, int y) {
+	public void markAlive(int x, int y) {
 		cells[x][y].markAlive();
 	}
 
@@ -65,7 +57,7 @@ public class World {
 		return tempCells;
 	}
 
-	private int getNumberOfAliveNeighbours(Cell[][] tc, int x, int y) {
+	private int numberOfLiveNeighbours(Cell[][] tc, int x, int y) {
 		int toReturn = 0;
 		try {
 			if (tc[x - 1][y - 1].isAlive()) {

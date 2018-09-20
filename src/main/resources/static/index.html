@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Conway Game of Life</title>
+<script>
+	var size = 40;
+	if (getUrlVars()["size"]) {
+		size = getUrlVars()["size"];
+	}
+	function getUrlVars() {
+		var vars = {};
+		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+				function(m, key, value) {
+					vars[key] = value;
+				});
+		return vars;
+	}
+	function createWorld() {
+		var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance 
+		xmlhttp.open("POST", "/world");
+		xmlhttp.setRequestHeader("Content-Type", "application/json");
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 201) {
+				worldUrl = this.getResponseHeader("Location");
+				window.location.href = "/world.html?id="
+						+ worldUrl.split("/")[2];
+			}
+		};
+		xmlhttp.send(constructInputJsonFromUserRules());
+	}
+	function constructInputJsonFromUserRules() {
+		var tr = new Array(size);
+		var table = document.getElementById("myTable");
+		for (var i = 0; i < size; i++) {
+			var td = new Array(size);
+			for (var j = 0; j < size; j++) {
+				var thisCell = table.rows[i].cells[j];
+				var cellData = new Object();
+				if (thisCell.style.backgroundColor == "black") {
+					cellData.alive = true;
+				} else {
+					cellData.alive = false;
+				}
+				td[j] = cellData;
+			}
+			tr[i] = td;
+		}
+		var toReturn = new Object();
+		toReturn.cells = tr;
+		return JSON.stringify(toReturn);
+	}
+	function toggleAliveDead(e) {
+		if (e.srcElement.style.backgroundColor == "black") {
+			e.srcElement.style.backgroundColor = "white";
+		} else {
+			e.srcElement.style.backgroundColor = "black";
+		}
+		//alert(e.srcElement.style.backgroundColor);
+	}
+</script>
+</head>
+<body>
+	<h1>Conway Game of Life</h1>
+	<div id="manage">
+		<button type="button" onclick="createWorld()">Create</button>
+	</div>
+	<br>
+	<table id="myTable" border=1>
+	</table>
+	<script>
+		// Find a <table> element with id="myTable":
+		var table = document.getElementById("myTable");
+		for (var i = 0; i < size; i++) {
+			// Create an empty <tr> element and add it to the 1st position of the table:
+			var row = table.insertRow(-1);
+			for (var j = 0; j < size; j++) {
+				// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+				var cell = row.insertCell(-1);
+				cell.style.width = '8px';
+				cell.style.height = '8px';
+				cell.onclick = function(e) {
+					toggleAliveDead(e);
+				};
+				cell.style.backgroundColor = "white";
+				//cell.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			}
+		}
+	</script>
+</body>
+</html>
