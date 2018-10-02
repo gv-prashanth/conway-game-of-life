@@ -68,16 +68,34 @@
 	        document.getElementById("helpbtn").value="Help Me Understand";
 	    }
 	}
+	function validateAndCreateWorld(){
+		var valid = false;
+		var table = document.getElementById("myTable");
+		for (var i = 0; i < size; i++) {
+			for (var j = 0; j < size; j++) {
+				var thisCell = table.rows[i].cells[j];
+				var cellData = new Object();
+				if (thisCell.style.backgroundColor == "black") {
+					valid= true;
+				}
+			}
+		}
+		if(valid){
+			createWorld();
+		}else{
+			alert("There seem to be no alive cells in this world. Try clicking on some cells!");
+		}
+	}
 </script>
 </head>
 <body>
 	<h1>Conway Game of Life</h1>
 	<div id="manage">
-		<button type="button" onclick="createWorld()">Create</button>&nbsp;<input type="button" id="helpbtn" type="button" onclick="openHelp()" value="Help Me Understand"></button>
+		<button type="button" onclick="validateAndCreateWorld();">Create</button>&nbsp;<input type="button" id="helpbtn" type="button" onclick="openHelp()" value="Help Me Understand"></button>
 	</div>
 	<br>
 	<div id="help" style="display:none">
-		The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970. The game is a zero-player game, meaning that its evolution is determined by its initial state, requiring no further input. One interacts with the Game of Life by creating an initial configuration and observing how it evolves.
+		The Game of Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970. The game is a zero-player game, meaning that its evolution is determined by its initial state, requiring no further input. One interacts with the Game of Life by creating an initial configuration and observing how it evolves.
 		<p>The universe of the Game of Life is a two-dimensional grid of square cells, each of which is in one of two possible states, alive or dead. Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent.</p> 
 		<p>
 			At each step in time, the following transitions occur:
