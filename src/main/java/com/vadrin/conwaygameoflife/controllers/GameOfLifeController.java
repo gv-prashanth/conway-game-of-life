@@ -57,13 +57,19 @@ public class GameOfLifeController {
 		return ResponseEntity.ok(thisWorld);
 	}
 
-	@Scheduled(fixedDelayString = "${com.vadrin.worldtick.frequency}")
+	@Scheduled(fixedDelayString = "${com.vadrin.conway-game-of-life.worldtick.frequency}")
 	public void moveTheWorldForward() {
 		activeWorlds.keySet().forEach(key -> {
 			log.info("Moving the world forward one step at a time..." + key);
 			activeWorlds.get(key).tick();
 			// TODO: Check and remove the world if there is no life
 		});
+	}
+	
+	@Scheduled(fixedDelayString = "${com.vadrin.conway-game-of-life.worldtick.cleanupFrequency}")
+	private void clearAllWorlds() {
+		log.info("Cleaning up the Worlds...");
+		activeWorlds = new HashMap<String, World>();
 	}
 
 	@PostConstruct
