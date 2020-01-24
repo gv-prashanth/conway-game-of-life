@@ -86,12 +86,23 @@
 			alert("There seem to be no alive cells in this world. Try clicking on some cells!");
 		}
 	}
+	function randomWorld(){
+		var table = document.getElementById("myTable");
+		for (var i = 0; i < size; i++) {
+			for (var j = 0; j < size; j++) {
+				var thisCell = table.rows[i].cells[j];
+				if(Math.random() > 0.5){
+					thisCell.style.backgroundColor = "black";
+				}
+			}
+		}
+	}
 </script>
 </head>
 <body>
 	<h1>Conway Game of Life</h1>
 	<div id="manage">
-		<button type="button" onclick="validateAndCreateWorld();">Create</button>&nbsp;<input type="button" id="helpbtn" type="button" onclick="openHelp()" value="Help Me Understand">
+		<button type="button" onclick="randomWorld();">Randomize World</button>&nbsp;<button type="button" onclick="validateAndCreateWorld();">Begin World</button>&nbsp;<input type="button" id="helpbtn" type="button" onclick="openHelp()" value="Help Me Understand">
 	</div>
 	<br>
 	<div id="help" style="display:none">
