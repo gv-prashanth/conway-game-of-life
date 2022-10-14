@@ -3,7 +3,7 @@ A Conway's Game of Life simulator. You can play around at <a href="#"> Conway Ga
 
 ## Create a World
 ### URL
-https://conway-game-of-life-sim.herokuapp.com/world
+HOST/world
 ### HttpMethod
 POST
 ### Request Body
@@ -72,7 +72,7 @@ POST
 
 ## Observe the world
 ### URL
-https://conway-game-of-life-sim.herokuapp.com/world/{worldId}
+HOST/world/{worldId}
 ### HttpMethod
 GET
 ### Sample Response Body
