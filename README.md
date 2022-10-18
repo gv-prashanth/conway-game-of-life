@@ -1,5 +1,5 @@
 # conway-game-of-life
-A Conway's Game of Life simulator. You can play around at <a href="conway-game-of-life.vadrin.com"> Conway Game of Life </a>
+A Conway's Game of Life simulator. You can play around at <a href="http://conway-game-of-life.vadrin.com"> Conway Game of Life </a>
 
 ## Create a World
 ### URL
